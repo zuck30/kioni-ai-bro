@@ -4,7 +4,12 @@ import tempfile
 import os
 from typing import Optional, Tuple
 import whisper
-from TTS.api import TTS
+try:
+    from TTS.api import TTS
+    HAS_TTS = True
+except ImportError:
+    HAS_TTS = False
+    print("Warning: TTS package not found. Voice responses will be disabled.")
 from ...config import settings
 
 class SpeechProcessor:
@@ -19,10 +24,14 @@ class SpeechProcessor:
             print("Loading Whisper model...")
             self.whisper_model = whisper.load_model(settings.WHISPER_MODEL)
         
-        if self.tts_model is None:
+        if self.tts_model is None and HAS_TTS:
             print("Loading TTS model...")
             # Using Coqui TTS with XTTS v2 for multilingual support
-            self.tts_model = TTS(settings.TTS_MODEL)
+            try:
+                self.tts_model = TTS(settings.TTS_MODEL)
+            except Exception as e:
+                print(f"Error loading TTS model: {e}")
+                self.tts_model = None
     
     async def speech_to_text(
         self, 
@@ -64,6 +73,9 @@ class SpeechProcessor:
         """
         Convert text to speech with Swahili accent
         """
+        if not HAS_TTS or self.tts_model is None:
+            raise Exception("TTS is not available. Please install Coqui TTS and use Python 3.10.")
+
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             output_path = tmp.name
         
