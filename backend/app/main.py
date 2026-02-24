@@ -2,6 +2,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 from .api.endpoints import mazungumzo, sauti, picha, hali
 from .api.websocket import chat_ws
