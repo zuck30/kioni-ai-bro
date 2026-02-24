@@ -1,4 +1,3 @@
-Here's a clean, modern README for Kioni:
 
 ---
 
