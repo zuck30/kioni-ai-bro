@@ -93,7 +93,7 @@ const VoiceControl: React.FC = () => {
         type: 'voice',
         language: 'mixed',
         timestamp: new Date(),
-        audioUrl: `data:audio/wav;base64,${response.data.audio_response}`
+        audioUrl: response.data.audio_response ? `data:audio/wav;base64,${response.data.audio_response}` : undefined
       });
 
       // Play audio response
@@ -104,6 +104,10 @@ const VoiceControl: React.FC = () => {
 
     } catch (err) {
       console.error('Voice processing error:', err);
+      setIsRecording(false);
+      setListening(false);
+      setAudioLevel(0);
+      alert("Shida na sauti. Jaribu tena baada ya muda kidogo.");
     }
   };
 

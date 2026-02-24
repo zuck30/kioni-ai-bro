@@ -6,6 +6,7 @@ from ...config import settings
 class TextGenerator:
     def __init__(self):
         self.hf_token = settings.HUGGINGFACE_TOKEN
+        self.openrouter_key = settings.OPENROUTER_API_KEY
         self.primary_model = settings.TEXT_MODEL_PRIMARY
         self.fallback_model = settings.TEXT_MODEL_FALLBACK
         
@@ -21,12 +22,21 @@ class TextGenerator:
         # Build conversation history
         conversation = self._build_prompt(messages, system_prompt, language)
         
-        # Try primary model
+        # Try primary model (Hugging Face)
         try:
             response = await self._call_hf_api(self.primary_model, conversation)
             return self._post_process(response, language)
         except Exception as e:
-            # Fallback to secondary model
+            print(f"Primary model error: {e}")
+            # Try OpenRouter if available
+            if self.openrouter_key:
+                try:
+                    response = await self._call_openrouter_api(conversation)
+                    return self._post_process(response, language)
+                except Exception as ore:
+                    print(f"OpenRouter error: {ore}")
+
+            # Fallback to secondary model (Hugging Face)
             try:
                 response = await self._call_hf_api(self.fallback_model, conversation)
                 return self._post_process(response, language)
@@ -82,6 +92,28 @@ class TextGenerator:
             if isinstance(result, list) and len(result) > 0:
                 return result[0].get("generated_text", "")
             return result.get("generated_text", "")
+
+    async def _call_openrouter_api(self, prompt: str) -> str:
+        """Call OpenRouter API as a robust fallback"""
+        api_url = "https://openrouter.ai/api/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.openrouter_key}",
+            "HTTP-Referer": "https://github.com/kioni-ai-bro",
+            "X-Title": "Kioni AI Bro"
+        }
+
+        payload = {
+            "model": "mistralai/mistral-7b-instruct:free",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 150,
+            "temperature": 0.7
+        }
+
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(api_url, json=payload, headers=headers)
+            response.raise_for_status()
+            result = response.json()
+            return result["choices"][0]["message"]["content"]
     
     def _post_process(self, text: str, language: Language) -> str:
         """Clean up and format the response"""

@@ -86,6 +86,22 @@ Connect to Kioni's brain via WebSockets for real-time interaction:
 - **POST `/api/voice/upload`**: Upload audio files for transcription and Swahili response.
 - **POST `/api/hali/update`**: Update Kioni's mood and personality traits.
 
+## 🔍 Troubleshooting & AI Status
+
+If Kioni is not responding correctly or giving fallback "brain nap" responses, you can check the status of the AI models and API keys:
+
+1. **Check AI Status Endpoint**:
+   Visit `http://localhost:8000/api/debug/ai-status` in your browser.
+   This will return a JSON showing:
+   - If `HUGGINGFACE_TOKEN` and `OPENROUTER_API_KEY` are detected.
+   - Connectivity status to Hugging Face and OpenRouter.
+   - Which models are currently configured.
+
+2. **Common Issues**:
+   - **422 Unprocessable Entity**: Usually means the request body is missing or formatted incorrectly. (Fixed in latest version for vision frames).
+   - **"Warning: TTS package not found"**: Coqui TTS requires Python 3.9-3.11. If you are on Python 3.12, voice responses will be disabled unless you use a compatible environment.
+   - **Fallback Responses**: If both Hugging Face and OpenRouter fail (e.g., due to rate limits or invalid tokens), Kioni will use a simple rule-based response.
+
 ---
 
 ## 🛠️ Tech Stack

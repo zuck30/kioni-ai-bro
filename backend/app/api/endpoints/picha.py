@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from typing import Optional
-from ...models.schemas import VisionRequest, VisionResponse
+from ...models.schemas import VisionRequest, VisionResponse, CameraFrameRequest
 from ...core.ai_models.vision_analyzer import VisionAnalyzer
 from ...core.personality.bro_engine import BroEngine
 
@@ -24,17 +24,18 @@ async def analyze_image(request: VisionRequest):
             description=result["description"],
             objects=result["objects"],
             swahili_context=result["swahili_context"],
-            mood_suggestion=result["mood_suggestion"]
+            mood_suggestion=result["mood_suggestion"],
+            reaction=reaction
         )
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Shida na picha: {str(e)}")
 
 @router.post("/vision/camera-frame")
-async def process_camera_frame(frame_base64: str, session_id: Optional[str] = None):
+async def process_camera_frame(request: CameraFrameRequest):
     """Process periodic camera frame for context"""
     try:
-        result = await vision_analyzer.analyze_image(frame_base64)
+        result = await vision_analyzer.analyze_image(request.frame_base64)
         
         # Only store significant changes
         if result["objects"] or "person" in result["description"].lower():

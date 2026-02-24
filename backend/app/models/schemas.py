@@ -54,11 +54,16 @@ class VisionRequest(BaseModel):
     image_base64: str
     context: Optional[str] = None  # Previous conversation context
 
+class CameraFrameRequest(BaseModel):
+    frame_base64: str
+    session_id: Optional[str] = None
+
 class VisionResponse(BaseModel):
     description: str
     objects: List[Dict[str, Any]]
     swahili_context: str  # Culturally-aware description
     mood_suggestion: Optional[Mood]
+    reaction: Optional[str] = None
 
 class HaliState(BaseModel):
     current_mood: Mood

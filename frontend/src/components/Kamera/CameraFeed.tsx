@@ -9,7 +9,7 @@ const CameraFeed: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { sessionId } = useKioniStore();
+  const { sessionId, addMessage } = useKioniStore();
 
   useEffect(() => {
     let stream: MediaStream | null = null;
@@ -68,10 +68,21 @@ const CameraFeed: React.FC = () => {
     const imageBase64 = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
 
     try {
-      await axios.post('http://localhost:8000/api/vision/camera-frame', {
+      const response = await axios.post('http://localhost:8000/api/vision/camera-frame', {
         frame_base64: imageBase64,
         session_id: sessionId
       });
+
+      if (response.data.suggested_comment) {
+        addMessage({
+          id: `vision_${Date.now()}`,
+          role: 'kioni',
+          content: response.data.suggested_comment,
+          type: 'text',
+          language: 'mixed',
+          timestamp: new Date()
+        });
+      }
     } catch (err) {
       console.error('Vision API error:', err);
     }

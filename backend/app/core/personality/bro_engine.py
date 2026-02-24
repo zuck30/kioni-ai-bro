@@ -222,3 +222,29 @@ Use local references: football, Bongo Flava, food, matatu culture when relevant.
         for trait in ["urafiki", "ucheshi", "hekima", "msaada"]:
             if trait in feedback:
                 self.personality_state[trait] = max(0, min(100, feedback[trait]))
+
+    def generate_vision_reaction(self, analysis: Dict[str, Any]) -> str:
+        """Generate a short Swahili reaction to what Kioni sees"""
+        desc = analysis.get("description", "").lower()
+        objects = analysis.get("objects", [])
+
+        if any(obj["object"] == "matatu" for obj in objects):
+            return "Wueh! Hiyo matatu iko na raba fiti sana!"
+
+        if "person" in desc:
+            return "Nakuona mzee! Uko rada?"
+
+        return "Safi! Hapo nimeona kitu poa sana."
+
+    def generate_vision_comment(self, analysis: Dict[str, Any]) -> str:
+        """Generate a natural comment about the surroundings"""
+        swahili_context = analysis.get("swahili_context", "Nakuona uko poa.")
+
+        comments = [
+            f"Ebu nione... {swahili_context}",
+            f"Kaka, {swahili_context}",
+            f"Hapo sasa! {swahili_context}",
+            f"Rada ni gani? {swahili_context}"
+        ]
+
+        return random.choice(comments)
