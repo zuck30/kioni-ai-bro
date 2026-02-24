@@ -2,11 +2,15 @@ import chromadb
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import json
-from ..config import settings
+# Changed to absolute import to avoid "beyond top-level package" errors
+from app.config import settings
 
 class ChromaDBManager:
     def __init__(self):
+        # Updated to the modern PersistentClient architecture
+        # This replaces the deprecated duckdb+parquet Settings configuration
         self.client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
+        
         self.collection = self.client.get_or_create_collection(
             name=settings.COLLECTION_NAME,
             metadata={"hnsw:space": "cosine"}

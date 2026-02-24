@@ -124,7 +124,7 @@ const ChatInterface: React.FC = () => {
               <span className="text-amber-800 font-bold">K</span>
             </div>
             <div>
-              <h1 className="font-bold text-amber-900">Mazungumzo</h1>
+              <h1 className="font-bold text-amber-900">Chats</h1>
               <p className="text-xs text-amber-600">
                 {useKioniStore.getState().currentGreeting}
               </p>
