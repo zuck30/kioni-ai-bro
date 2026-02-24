@@ -1,0 +1,53 @@
+from pydantic_settings import BaseSettings
+from typing import Optional, List
+import os
+
+class Settings(BaseSettings):
+
+    APP_NAME: str = "KIONI AI Bro"
+    DEBUG: bool = False
+    VERSION: str = "1.0.0"
+    
+    # API Keys (Free tier)
+    HUGGINGFACE_TOKEN: Optional[str] = None
+    OPENROUTER_API_KEY: Optional[str] = None
+    
+    # AI Models
+    TEXT_MODEL_PRIMARY: str = "mistralai/Mistral-7B-Instruct-v0.2"
+    TEXT_MODEL_FALLBACK: str = "HuggingFaceH4/zephyr-7b-beta"
+    WHISPER_MODEL: str = "base"  # tiny/base/small/medium/large
+    VISION_MODEL: str = "vikhyatk/moondream2"
+    TTS_MODEL: str = "tts_models/multilingual/multi-dataset/xtts_v2"
+    
+    # Swahili-specific
+    SWAHILI_ROBERTA: str = "akiraindinesh/swahili-roberta"
+    SHENG_DETECTION: bool = True
+    
+    # ChromaDB
+    CHROMA_PERSIST_DIR: str = "./chroma_db"
+    COLLECTION_NAME: str = "kioni_memory"
+    
+    # WebSocket
+    WS_HEARTBEAT_INTERVAL: int = 30
+    
+    # Personality
+    DEFAULT_PERSONALITY: dict = {
+        "urafiki": 80,      # Friendliness
+        "ucheshi": 60,      # Humor
+        "hekima": 70,       # Wisdom
+        "msaada": 90,       # Supportiveness
+        "mode": "rafiki"    # rafiki/mshauri
+    }
+    
+    # Audio
+    MAX_AUDIO_SIZE: int = 10 * 1024 * 1024  # 10MB
+    SUPPORTED_AUDIO_FORMATS: List[str] = ["wav", "mp3", "webm", "ogg"]
+    
+    # Vision
+    CAMERA_FRAME_INTERVAL: float = 5.0  # seconds
+    VISION_CONFIDENCE_THRESHOLD: float = 0.6
+    
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
