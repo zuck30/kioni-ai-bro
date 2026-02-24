@@ -13,7 +13,7 @@ const CameraFeed: React.FC = () => {
 
   useEffect(() => {
     let stream: MediaStream | null = null;
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
 
     const startCamera = async () => {
       try {
