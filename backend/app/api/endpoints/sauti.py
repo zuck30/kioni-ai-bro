@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
+from typing import Optional
 import base64
 import io
 from ...models.schemas import VoiceRequest

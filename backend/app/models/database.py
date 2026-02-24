@@ -3,7 +3,7 @@ from chromadb.config import Settings
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import json
-from ...config import settings
+from ..config import settings
 
 class ChromaDBManager:
     def __init__(self):

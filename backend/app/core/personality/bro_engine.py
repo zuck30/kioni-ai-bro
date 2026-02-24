@@ -211,6 +211,10 @@ Use local references: football, Bongo Flava, food, matatu culture when relevant.
         
         return deep_count >= 2
     
+    def _get_time_of_day(self) -> str:
+        """Helper to get current time of day"""
+        return get_time_of_day()
+
     def update_personality(self, feedback: Dict[str, Any]):
         """Adjust personality based on user feedback"""
         if "mood" in feedback:
