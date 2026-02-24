@@ -111,7 +111,7 @@ const ChatInterface: React.FC = () => {
         </div>
         <div className="mt-4 text-center">
           <h2 className="text-2xl font-bold text-amber-900">KIONI</h2>
-          <p className="text-amber-700 italic">"Rafiki yako wa AI"</p>
+          <p className="text-amber-700 italic">"Bro wako"</p>
         </div>
       </div>
 
