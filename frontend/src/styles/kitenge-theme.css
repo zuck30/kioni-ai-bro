@@ -1,16 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-earth-red: #8B4513;
-  --color-earth-brown: #654321;
-  --color-kitenge-blue: #1E90FF;
-  --color-kitenge-green: #228B22;
-  --color-gold: #DAA520;
-  --color-cream: #FFF8DC;
+  --color-jarvis-black: #050505;
+  --color-kioni-cyan: #06b6d4;
+  --color-kioni-blue: #3b82f6;
+  --color-neon-accent: #22d3ee;
 }
 
 * {
@@ -18,77 +16,96 @@
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: var(--color-cream);
-  color: var(--color-earth-brown);
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-jarvis-black);
+  color: #e5e7eb;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Merriweather', serif;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Kitenge Pattern Backgrounds */
-.kitenge-bg-1 {
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(139, 69, 19, 0.1) 10px,
-    rgba(139, 69, 19, 0.1) 20px
+/* Jarvis-style Glassmorphism */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-header {
+  background: rgba(5, 5, 5, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+/* Holographic Effect */
+.hologram-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.hologram-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(6, 182, 212, 0) 0%,
+    rgba(6, 182, 212, 0.05) 50%,
+    rgba(6, 182, 212, 0) 100%
   );
+  background-size: 100% 4px;
+  pointer-events: none;
+  animation: scan 4s linear infinite;
 }
 
-.kitenge-bg-2 {
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    rgba(30, 144, 255, 0.1) 0%,
-    transparent 50%
-  );
+@keyframes scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
 }
 
-/* Swahili-style decorative elements */
-.swahili-border {
-  border: 3px solid var(--color-earth-red);
-  border-image: repeating-linear-gradient(
-    45deg,
-    var(--color-earth-red),
-    var(--color-earth-red) 10px,
-    var(--color-gold) 10px,
-    var(--color-gold) 20px
-  ) 3;
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar - Jarvis Style */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-earth-red);
-  border-radius: 4px;
+  background: rgba(6, 182, 212, 0.3);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-earth-brown);
+  background: rgba(6, 182, 212, 0.5);
+}
+
+/* Swahili-style but modernized */
+.kioni-border {
+  border: 1px solid var(--color-kioni-cyan);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
 }
 
 /* Animation for "thinking" state */
-@keyframes think {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.8); }
 }
 
-.thinking {
-  animation: think 1s ease-in-out infinite;
+.thinking-glow {
+  animation: pulse-cyan 2s infinite;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .kitenge-responsive {
-    background-size: 20px 20px;
+  .mobile-hide {
+    display: none;
   }
 }

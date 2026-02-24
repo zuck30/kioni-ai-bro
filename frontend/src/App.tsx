@@ -4,7 +4,7 @@ import './styles/kitenge-theme.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-amber-50">
+    <div className="min-h-screen bg-black">
       <ChatInterface />
     </div>
   );

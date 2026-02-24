@@ -33,7 +33,8 @@ const InputArea: React.FC<InputAreaProps> = ({ value, onChange, onSend, placehol
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="w-full bg-amber-50/50 border border-amber-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 resize-none transition-all text-amber-900 placeholder:text-amber-400"
+        className="w-full bg-transparent border-none text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-0 resize-none py-3 px-2 text-sm font-medium scrollbar-hide"
+        style={{ maxHeight: '150px' }}
       />
     </div>
   );

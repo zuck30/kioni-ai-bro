@@ -115,11 +115,11 @@ const VoiceControl: React.FC = () => {
     <div className="relative">
       <motion.button
         onClick={isRecording ? stopRecording : startRecording}
-        whileTap={{ scale: 0.95 }}
-        className={`p-3 rounded-full transition-colors ${
+        whileTap={{ scale: 0.9 }}
+        className={`p-3 rounded-xl transition-all duration-300 ${
           isRecording 
-            ? 'bg-red-500 text-white animate-pulse' 
-            : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+            ? 'bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]'
+            : 'bg-slate-800 text-slate-400 hover:text-cyan-400 hover:bg-slate-700'
         }`}
       >
         {isRecording ? <Square size={20} /> : <Mic size={20} />}
@@ -132,19 +132,13 @@ const VoiceControl: React.FC = () => {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            className="absolute -top-1 -right-1 -left-1 -bottom-1 rounded-full border-2 border-red-400"
+            className="absolute inset-0 rounded-xl border-2 border-red-500/50"
             style={{
-              transform: `scale(${1 + audioLevel / 200})`
+              transform: `scale(${1 + audioLevel / 150})`
             }}
           />
         )}
       </AnimatePresence>
-
-      {isRecording && (
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-red-500 whitespace-nowrap">
-          Rekodi... (Recording)
-        </span>
-      )}
     </div>
   );
 };
