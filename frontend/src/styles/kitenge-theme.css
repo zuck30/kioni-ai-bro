@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+  --color-earth-red: #8B4513;
+  --color-earth-brown: #654321;
+  --color-kitenge-blue: #1E90FF;
+  --color-kitenge-green: #228B22;
+  --color-gold: #DAA520;
+  --color-cream: #FFF8DC;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-earth-brown);
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Merriweather', serif;
+}
+
+/* Kitenge Pattern Backgrounds */
+.kitenge-bg-1 {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(139, 69, 19, 0.1) 10px,
+    rgba(139, 69, 19, 0.1) 20px
+  );
+}
+
+.kitenge-bg-2 {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(30, 144, 255, 0.1) 0%,
+    transparent 50%
+  );
+}
+
+/* Swahili-style decorative elements */
+.swahili-border {
+  border: 3px solid var(--color-earth-red);
+  border-image: repeating-linear-gradient(
+    45deg,
+    var(--color-earth-red),
+    var(--color-earth-red) 10px,
+    var(--color-gold) 10px,
+    var(--color-gold) 20px
+  ) 3;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-earth-red);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-earth-brown);
+}
+
+/* Animation for "thinking" state */
+@keyframes think {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.thinking {
+  animation: think 1s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .kitenge-responsive {
+    background-size: 20px 20px;
+  }
+}
