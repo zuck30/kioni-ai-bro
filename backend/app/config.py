@@ -1,6 +1,11 @@
 from pydantic_settings import BaseSettings
 from typing import Optional, List
 import os
+from pathlib import Path
+
+# Root directory of the project
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+ENV_FILE = ROOT_DIR / ".env"
 
 class Settings(BaseSettings):
 
@@ -13,7 +18,7 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: Optional[str] = None
     
     # AI Models
-    TEXT_MODEL_PRIMARY: str = "mistralai/Mistral-7B-Instruct-v0.2"
+    TEXT_MODEL_PRIMARY: str = "mistralai/Mistral-7B-Instruct-v0.3"
     TEXT_MODEL_FALLBACK: str = "HuggingFaceH4/zephyr-7b-beta"
     WHISPER_MODEL: str = "base"  # tiny/base/small/medium/large
     VISION_MODEL: str = "vikhyatk/moondream2"
@@ -48,6 +53,7 @@ class Settings(BaseSettings):
     VISION_CONFIDENCE_THRESHOLD: float = 0.6
     
     class Config:
-        env_file = ".env"
+        env_file = str(ENV_FILE)
+        env_file_encoding = 'utf-8'
 
 settings = Settings()

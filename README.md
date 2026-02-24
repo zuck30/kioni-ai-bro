@@ -101,6 +101,8 @@ If Kioni is not responding correctly or giving fallback "brain nap" responses, y
    - **422 Unprocessable Entity**: Usually means the request body is missing or formatted incorrectly. (Fixed in latest version for vision frames).
    - **"Warning: TTS package not found"**: Coqui TTS requires Python 3.9-3.11. If you are on Python 3.12, voice responses will be disabled unless you use a compatible environment.
    - **Fallback Responses**: If both Hugging Face and OpenRouter fail (e.g., due to rate limits or invalid tokens), Kioni will use a simple rule-based response.
+   - **.env Location**: Ensure your `.env` file is in the root directory. Kioni is configured to look for it there even if the backend is started from within the `backend/` folder.
+   - **Model Availability**: If Hugging Face returns `410 Gone`, it means the specific model has been retired from their free API. Kioni automatically attempts to fall back to OpenRouter in this case.
 
 ---
 
