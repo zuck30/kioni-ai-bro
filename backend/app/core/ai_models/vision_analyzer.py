@@ -34,6 +34,12 @@ class VisionAnalyzer:
         """Lazy load Moondream or similar lightweight vision model"""
         if self.model is None:
             try:
+                # Check PyTorch version for compatibility
+                torch_version = torch.__version__
+                if torch_version < "2.4.0":
+                    print(f"WARNING: PyTorch {torch_version} detected. Vision models (Moondream2) usually require PyTorch >= 2.4.0 for proper functionality.")
+                    print("To fix this, run: pip install --upgrade torch torchvision torchaudio")
+
                 print(f"Loading vision model: {settings.VISION_MODEL}...")
                 model_id = settings.VISION_MODEL
 

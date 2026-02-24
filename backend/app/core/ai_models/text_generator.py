@@ -38,7 +38,7 @@ class TextGenerator:
             response = await self._call_hf_api(self.primary_model, conversation)
             return self._post_process(response, language)
         except Exception as e:
-            print(f"Primary model error: {e}")
+            print(f"Primary model error ({self.primary_model}): {e}")
             # Try OpenRouter if available
             if self.openrouter_key:
                 try:
@@ -82,7 +82,10 @@ class TextGenerator:
     async def _call_hf_api(self, model: str, prompt: str) -> str:
         """Call Hugging Face Inference API"""
         api_url = f"https://api-inference.huggingface.co/models/{model}"
-        headers = {"Authorization": f"Bearer {self.hf_token}"} if self.hf_token else {}
+        headers = {
+            "Authorization": f"Bearer {self.hf_token}",
+            "Content-Type": "application/json"
+        } if self.hf_token else {"Content-Type": "application/json"}
         
         payload = {
             "inputs": prompt,
@@ -97,6 +100,8 @@ class TextGenerator:
         
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(api_url, json=payload, headers=headers)
+            if response.status_code != 200:
+                print(f"HF API Error {response.status_code}: {response.text}")
             response.raise_for_status()
             result = response.json()
             
@@ -109,12 +114,13 @@ class TextGenerator:
         api_url = "https://openrouter.ai/api/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {self.openrouter_key}",
+            "Content-Type": "application/json",
             "HTTP-Referer": "https://github.com/kioni-ai-bro",
             "X-Title": "Kioni AI Bro"
         }
 
         payload = {
-            "model": "mistralai/mistral-7b-instruct:free",
+            "model": "mistralai/mistral-7b-instruct-v0.3",
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": 150,
             "temperature": 0.7
@@ -122,6 +128,8 @@ class TextGenerator:
 
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(api_url, json=payload, headers=headers)
+            if response.status_code != 200:
+                print(f"OpenRouter API Error {response.status_code}: {response.text}")
             response.raise_for_status()
             result = response.json()
             return result["choices"][0]["message"]["content"]

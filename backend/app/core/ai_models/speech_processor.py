@@ -14,7 +14,16 @@ try:
     HAS_TTS = True
 except ImportError:
     HAS_TTS = False
-    print("Warning: TTS package not found. Voice responses will be disabled.")
+
+try:
+    import edge_tts
+    HAS_EDGE_TTS = True
+except ImportError:
+    HAS_EDGE_TTS = False
+
+if not HAS_TTS and not HAS_EDGE_TTS:
+    print("Warning: Neither Coqui TTS nor edge-tts found. Voice responses will be disabled.")
+
 from ...config import settings
 
 class SpeechProcessor:
@@ -88,13 +97,22 @@ class SpeechProcessor:
         speaker_wav: Optional[str] = None
     ) -> bytes:
         """
-        Convert text to speech with Swahili accent
+        Convert text to speech with Swahili accent.
+        Tries Coqui TTS first, fallbacks to edge-tts.
         """
         self._load_models()
 
-        if not HAS_TTS or self.tts_model is None:
-            raise Exception("TTS is not available. Please install Coqui TTS and use Python 3.10/3.11.")
+        # Try Coqui TTS first (High quality, local)
+        if HAS_TTS and self.tts_model is not None:
+            return await self._generate_coqui_tts(text, language, speaker_wav)
 
+        # Fallback to edge-tts (Good quality, needs internet, works on Python 3.12)
+        if HAS_EDGE_TTS:
+            return await self._generate_edge_tts(text, language)
+
+        raise Exception("No TTS engine available. Please install Coqui TTS or edge-tts.")
+
+    async def _generate_coqui_tts(self, text: str, language: str, speaker_wav: Optional[str]) -> bytes:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             output_path = tmp.name
         
@@ -116,13 +134,28 @@ class SpeechProcessor:
                 )
             
             with open(output_path, "rb") as f:
-                audio_bytes = f.read()
-            
-            return audio_bytes
+                return f.read()
             
         finally:
             if os.path.exists(output_path):
                 os.unlink(output_path)
+
+    async def _generate_edge_tts(self, text: str, language: str) -> bytes:
+        """Fallback TTS using Microsoft Edge TTS"""
+        # Map languages to edge-tts voices
+        voices = {
+            "sw": "sw-KE-ZindaNeural",  # Kenya Swahili
+            "en": "en-US-GuyNeural"
+        }
+        voice = voices.get(language, "sw-KE-ZindaNeural")
+
+        communicate = edge_tts.Communicate(text, voice)
+        audio_data = b""
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                audio_data += chunk["data"]
+
+        return audio_data
     
     def add_swahili_expressions(self, text: str) -> str:
         """Add natural Swahili vocal expressions"""
