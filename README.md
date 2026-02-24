@@ -2,7 +2,7 @@
 
 Kioni is an advanced, culturally-aware AI assistant designed for the East African context. He speaks Swahili, English, and Sheng, and features a unique Kitenge-inspired visual interface.
 
-![Kioni Banner](./banner/banner.png)
+![Kioni Banner](./banner/banner-00.png)
 
 ## 🌟 Features
 
