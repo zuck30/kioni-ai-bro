@@ -1,8 +1,8 @@
-# KIONI - Your Swahili-Speaking AI Bro 🇰🇪🇹🇿
+# KIONI Your Swahili-Speaking AI Bro 🇹🇿🇰🇪 
 
 Kioni is an advanced, culturally-aware AI assistant designed for the East African context. He speaks Swahili, English, and Sheng, and features a unique Kitenge-inspired visual interface.
 
-![Kioni Banner](docs/banner.png)
+![Kioni Banner](banner.png)
 
 ## 🌟 Features
 
