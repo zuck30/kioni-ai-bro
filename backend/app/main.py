@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from datetime import datetime
 
-from .api.endpoints import mazungumzo, sauti, picha, hali
+from .api.endpoints import mazungumzo, sauti, picha, hali, debug
 from .api.websocket import chat_ws
 from .config import settings
 
@@ -37,6 +37,7 @@ app.include_router(mazungumzo.router, prefix="/api", tags=["mazungumzo"])
 app.include_router(sauti.router, prefix="/api", tags=["sauti"])
 app.include_router(picha.router, prefix="/api", tags=["picha"])
 app.include_router(hali.router, prefix="/api", tags=["hali"])
+app.include_router(debug.router, prefix="/api", tags=["debug"])
 
 # WebSocket
 @app.websocket("/ws/chat/{client_id}")
