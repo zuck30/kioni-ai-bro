@@ -3,7 +3,12 @@ import base64
 import tempfile
 import os
 from typing import Optional, Tuple
-import whisper
+try:
+    import whisper
+    HAS_WHISPER = True
+except ImportError:
+    HAS_WHISPER = False
+
 try:
     from TTS.api import TTS
     HAS_TTS = True
@@ -16,18 +21,25 @@ class SpeechProcessor:
     def __init__(self):
         self.whisper_model = None
         self.tts_model = None
-        self._load_models()
+        # Removed immediate call to _load_models() to prevent startup crashes
         
     def _load_models(self):
-        """Lazy load models"""
+        """Lazy load models with error handling"""
         if self.whisper_model is None:
-            print("Loading Whisper model...")
-            self.whisper_model = whisper.load_model(settings.WHISPER_MODEL)
+            if not HAS_WHISPER:
+                print("Error: Whisper package not found.")
+            else:
+                try:
+                    print("Loading Whisper model...")
+                    self.whisper_model = whisper.load_model(settings.WHISPER_MODEL)
+                except Exception as e:
+                    print(f"Error loading Whisper model: {e}")
+                    self.whisper_model = None
         
         if self.tts_model is None and HAS_TTS:
-            print("Loading TTS model...")
-            # Using Coqui TTS with XTTS v2 for multilingual support
             try:
+                print("Loading TTS model...")
+                # Using Coqui TTS with XTTS v2 for multilingual support
                 self.tts_model = TTS(settings.TTS_MODEL)
             except Exception as e:
                 print(f"Error loading TTS model: {e}")
@@ -42,6 +54,11 @@ class SpeechProcessor:
         Convert speech to text using Whisper
         Returns: (transcription, detected_language)
         """
+        self._load_models()
+
+        if self.whisper_model is None:
+            return "Samahani, siwezi kusikia kwa sasa.", "sw"
+
         # Save to temp file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             tmp.write(audio_bytes)
@@ -73,8 +90,10 @@ class SpeechProcessor:
         """
         Convert text to speech with Swahili accent
         """
+        self._load_models()
+
         if not HAS_TTS or self.tts_model is None:
-            raise Exception("TTS is not available. Please install Coqui TTS and use Python 3.10.")
+            raise Exception("TTS is not available. Please install Coqui TTS and use Python 3.10/3.11.")
 
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             output_path = tmp.name

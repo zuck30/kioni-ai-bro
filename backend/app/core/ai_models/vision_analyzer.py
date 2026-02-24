@@ -3,14 +3,18 @@ import base64
 from typing import Dict, List, Any, Optional
 from PIL import Image
 import torch
-from transformers import AutoModelForVision2Seq, AutoProcessor
+try:
+    from transformers import AutoModelForCausalLM, AutoProcessor
+    HAS_TRANSFORMERS = True
+except ImportError:
+    HAS_TRANSFORMERS = False
 from ...config import settings
 
 class VisionAnalyzer:
     def __init__(self):
         self.model = None
         self.processor = None
-        self._load_model()
+        # Removed immediate call to _load_model() to prevent startup crashes
         
         # Swahili cultural objects database
         self.cultural_objects = {
@@ -28,17 +32,28 @@ class VisionAnalyzer:
         }
         
     def _load_model(self):
-        """Load Moondream or similar lightweight vision model"""
+        """Lazy load Moondream or similar lightweight vision model"""
+        if not HAS_TRANSFORMERS:
+            print("Error: Transformers package not found.")
+            return
+
         if self.model is None:
-            print("Loading vision model...")
-            model_id = settings.VISION_MODEL
-            
-            self.processor = AutoProcessor.from_pretrained(model_id)
-            self.model = AutoModelForVision2Seq.from_pretrained(
-                model_id,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto"
-            )
+            try:
+                print("Loading vision model...")
+                model_id = settings.VISION_MODEL
+
+                # Moondream2 recommends AutoModelForCausalLM with trust_remote_code=True
+                self.processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_id,
+                    trust_remote_code=True,
+                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                    device_map="auto" if torch.cuda.is_available() else None
+                )
+            except Exception as e:
+                print(f"Error loading vision model: {e}")
+                self.model = None
+                self.processor = None
     
     async def analyze_image(
         self, 
@@ -46,6 +61,17 @@ class VisionAnalyzer:
         context: Optional[str] = None
     ) -> Dict[str, Any]:
         """Analyze image and return culturally-aware description"""
+        # Ensure model is loaded
+        self._load_model()
+
+        if self.model is None or self.processor is None:
+            return {
+                "description": "Nimeshindwa kuona picha hii kwa sasa (Model not available)",
+                "swahili_context": "Pole, nimepata shida kidogo na macho yangu ya AI.",
+                "objects": [],
+                "mood_suggestion": "poa"
+            }
+
         # Decode image
         image_bytes = base64.b64decode(image_base64)
         image = Image.open(io.BytesIO(image_bytes))
