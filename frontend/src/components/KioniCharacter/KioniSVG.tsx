@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useKioniStore } from '../../store/kioniStore';
-import { kitengePatterns } from './kitenge-patterns/patterns';
 import { kioniColors } from './kitenge-patterns/colors';
 
 const KioniSVG: React.FC = () => {
-  const { currentMood, isTyping, isSpeaking, isListening } = useKioniStore();
+  const { currentMood, isTyping, isSpeaking, isListening, isOnline } = useKioniStore();
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Dynamic colors based on mood
