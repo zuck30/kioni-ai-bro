@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from typing import Optional
 from ...models.schemas import VisionRequest, VisionResponse
 from ...core.ai_models.vision_analyzer import VisionAnalyzer
 from ...core.personality.bro_engine import BroEngine
