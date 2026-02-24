@@ -10,6 +10,17 @@ class TextGenerator:
         self.primary_model = settings.TEXT_MODEL_PRIMARY
         self.fallback_model = settings.TEXT_MODEL_FALLBACK
         
+        # Debug API keys (obscured)
+        if self.hf_token:
+            print(f"HF Token loaded: {self.hf_token[:5]}...{self.hf_token[-3:]}")
+        else:
+            print("HF Token NOT found in settings")
+
+        if self.openrouter_key:
+            print(f"OpenRouter Key loaded: {self.openrouter_key[:5]}...{self.openrouter_key[-3:]}")
+        else:
+            print("OpenRouter Key NOT found in settings")
+
     async def generate(
         self,
         messages: List[ChatMessage],
