@@ -11,7 +11,22 @@ export const useWebSocket = () => {
   const ws = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessage, setLastMessage] = useState<WebSocketMessage | null>(null);
-  const { sessionId, addMessage, setTyping } = useKioniStore();
+  const { sessionId, addMessage, setTyping, setSpeaking } = useKioniStore();
+
+  const playAudio = (base64Audio: string) => {
+    try {
+      const audio = new Audio(`data:audio/mpeg;base64,${base64Audio}`);
+      setSpeaking(true);
+      audio.onended = () => setSpeaking(false);
+      audio.play().catch(e => {
+        console.error("Playback error:", e);
+        setSpeaking(false);
+      });
+    } catch (e) {
+      console.error("Audio creation error:", e);
+      setSpeaking(false);
+    }
+  };
 
   const connect = useCallback(() => {
     if (ws.current?.readyState === WebSocket.OPEN) return;
@@ -59,6 +74,9 @@ export const useWebSocket = () => {
           timestamp: new Date()
         });
         setTyping(false);
+        if (data.payload.audio) {
+          playAudio(data.payload.audio);
+        }
         break;
       
       case 'typing':
