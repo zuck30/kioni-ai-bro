@@ -217,7 +217,7 @@ const KioniSVG: React.FC = () => {
           transition={{ duration: 0.5, repeat: Infinity }}
         />
         <span className="text-xs text-amber-800 font-medium">
-          {isTyping ? 'Anawaza...' : isListening ? 'Anaskiliza...' : 'Yuko Online'}
+          {isTyping ? 'Anawaza...' : isListening ? 'Anaskiliza...' : 'Bro, Nipo Online'}
         </span>
       </div>
     </div>
