@@ -112,37 +112,36 @@ const VoiceControl: React.FC = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <motion.button
         onClick={isRecording ? stopRecording : startRecording}
         whileTap={{ scale: 0.95 }}
-        className={`p-3 rounded-full transition-colors ${
+        className={`p-3.5 rounded-xl transition-all duration-500 shadow-sm ${
           isRecording 
-            ? 'bg-red-500 text-white animate-pulse' 
-            : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+            ? 'bg-red-500 text-white'
+            : 'bg-white text-cyan-600 hover:text-cyan-700 border border-slate-200'
         }`}
       >
-        {isRecording ? <Square size={20} /> : <Mic size={20} />}
+        {isRecording ? <Square size={20} fill="currentColor" /> : <Mic size={20} />}
       </motion.button>
 
       {/* Audio Level Indicator */}
       <AnimatePresence>
         {isRecording && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            className="absolute -top-1 -right-1 -left-1 -bottom-1 rounded-full border-2 border-red-400"
-            style={{
-              transform: `scale(${1 + audioLevel / 200})`
-            }}
-          />
+          <>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 + audioLevel / 100 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="absolute -inset-1 rounded-xl border-2 border-red-500/50 pointer-events-none"
+            />
+          </>
         )}
       </AnimatePresence>
 
       {isRecording && (
-        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-red-500 whitespace-nowrap">
-          Rekodi... (Recording)
+        <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-red-500 uppercase tracking-widest whitespace-nowrap bg-white/80 backdrop-blur-md px-2 py-1 rounded border border-red-200 shadow-sm">
+          Live Recording
         </span>
       )}
     </div>

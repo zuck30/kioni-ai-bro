@@ -25,7 +25,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, onChange, onSend, placehol
   };
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 min-w-0">
       <textarea
         ref={textareaRef}
         rows={1}
@@ -33,7 +33,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, onChange, onSend, placehol
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="w-full bg-amber-50/50 border border-amber-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 resize-none transition-all text-amber-900 placeholder:text-amber-400"
+        className="w-full bg-white/50 border border-slate-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500/50 resize-none transition-all text-slate-900 placeholder:text-slate-400 font-medium"
       />
     </div>
   );

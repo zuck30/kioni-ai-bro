@@ -35,7 +35,7 @@ const MoodSettings: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <h3 className="font-bold text-slate-100 mb-4 font-mono uppercase tracking-widest text-xs">Hali ya Kioni (Kioni's Mood)</h3>
+      <h3 className="font-bold text-slate-800 mb-4 font-mono uppercase tracking-widest text-xs opacity-60">Hali ya Kioni (Kioni's Mood)</h3>
       
       {/* Mood Selection */}
       <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
@@ -47,34 +47,34 @@ const MoodSettings: React.FC = () => {
             whileTap={{ scale: 0.95 }}
             className={`p-3 rounded-xl border transition-all duration-300 flex flex-col items-center text-center ${
               currentMood === mood.id
-                ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
-                : 'border-slate-800 hover:border-slate-700 bg-slate-900/50 text-slate-400'
+                ? 'border-cyan-500 bg-cyan-50 text-cyan-600 shadow-sm'
+                : 'border-slate-100 hover:border-slate-200 bg-white/40 text-slate-400'
             }`}
           >
-            <div className={`mb-2 ${currentMood === mood.id ? 'text-cyan-400' : 'text-slate-500'}`}>{mood.icon}</div>
+            <div className={`mb-2 ${currentMood === mood.id ? 'text-cyan-600' : 'text-slate-400'}`}>{mood.icon}</div>
             <div className="font-bold text-[10px] uppercase tracking-tighter">{mood.name}</div>
           </motion.button>
         ))}
       </div>
 
       {/* Personality Sliders */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-slate-800">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
         {[
-          { key: 'urafiki', label: 'Urafiki (Friendliness)', value: urafiki, color: 'bg-pink-500' },
-          { key: 'ucheshi', label: 'Ucheshi (Humor)', value: ucheshi, color: 'bg-yellow-500' },
-          { key: 'hekima', label: 'Hekima (Wisdom)', value: hekima, color: 'bg-purple-500' },
-          { key: 'msaada', label: 'Msaada (Support)', value: msaada, color: 'bg-green-500' }
+          { key: 'urafiki', label: 'Urafiki (Friendliness)', value: urafiki, color: 'bg-pink-400' },
+          { key: 'ucheshi', label: 'Ucheshi (Humor)', value: ucheshi, color: 'bg-yellow-400' },
+          { key: 'hekima', label: 'Hekima (Wisdom)', value: hekima, color: 'bg-purple-400' },
+          { key: 'msaada', label: 'Msaada (Support)', value: msaada, color: 'bg-emerald-400' }
         ].map((trait) => (
           <div key={trait.key} className="space-y-2">
-            <div className="flex justify-between text-[10px] font-mono uppercase tracking-wider text-slate-500">
+            <div className="flex justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
               <span>{trait.label}</span>
-              <span className="text-cyan-500/70">{trait.value}%</span>
+              <span className="text-cyan-600/70">{trait.value}%</span>
             </div>
-            <div className="relative h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="relative h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${trait.value}%` }}
-                className={`absolute top-0 left-0 h-full ${trait.color} shadow-[0_0_10px_rgba(255,255,255,0.2)]`}
+                className={`absolute top-0 left-0 h-full ${trait.color}`}
               />
               <input
                 type="range"

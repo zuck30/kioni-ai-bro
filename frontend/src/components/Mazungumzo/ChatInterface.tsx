@@ -109,29 +109,29 @@ const ChatInterface: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 selection:bg-cyan-500/30">
+    <div className="flex h-screen selection:bg-cyan-200">
       {/* Left Panel - Kioni Character (Hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/3 xl:w-1/4 flex-col items-center justify-center p-8 border-r border-slate-800 bg-slate-900/50 backdrop-blur-xl">
+      <div className="hidden lg:flex lg:w-1/3 xl:w-1/4 flex-col items-center justify-center p-8 border-r border-white/20 bg-white/30 backdrop-blur-2xl">
         <div className="w-full h-2/3 relative">
           <KioniSVG />
         </div>
         <div className="mt-8 text-center">
-          <h2 className="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">KIONI</h2>
-          <p className="text-slate-400 font-medium tracking-widest uppercase text-xs mt-2">Personal Bro Engine</p>
+          <h2 className="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-700">KIONI</h2>
+          <p className="text-slate-500 font-medium tracking-widest uppercase text-xs mt-2">Personal Bro Engine</p>
         </div>
       </div>
 
       {/* Right Panel - Chat */}
-      <div className="flex-1 flex flex-col min-w-0 bg-slate-950">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4 flex items-center justify-between sticky top-0 z-10">
+        <header className="bg-white/40 backdrop-blur-md border-b border-white/20 p-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <div className="lg:hidden w-10 h-10 bg-slate-800 border border-cyan-500/30 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              <span className="text-cyan-400 font-bold">K</span>
+            <div className="lg:hidden w-10 h-10 bg-white/60 border border-cyan-500/20 rounded-full flex items-center justify-center shadow-sm">
+              <span className="text-cyan-600 font-bold">K</span>
             </div>
             <div className="min-w-0">
-              <h1 className="font-bold text-slate-100 truncate">Kioni Chat</h1>
-              <p className="text-[10px] text-cyan-500/70 font-mono uppercase tracking-wider">
+              <h1 className="font-bold text-slate-900 truncate">Kioni Chat</h1>
+              <p className="text-[10px] text-cyan-600/70 font-mono uppercase tracking-wider">
                 {currentGreeting}
               </p>
             </div>
@@ -142,8 +142,8 @@ const ChatInterface: React.FC = () => {
               onClick={() => setShowSettings(!showSettings)}
               className={`p-2 rounded-full transition-all duration-300 ${
                 showSettings
-                  ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
-                  : 'bg-slate-800 text-slate-300 hover:text-cyan-400'
+                  ? 'bg-cyan-600 text-white shadow-md'
+                  : 'bg-white/60 text-slate-600 hover:text-cyan-600'
               }`}
             >
               <Settings size={20} />
@@ -158,7 +158,7 @@ const ChatInterface: React.FC = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md overflow-hidden"
+              className="border-b border-white/20 bg-white/60 backdrop-blur-md overflow-hidden"
             >
               <MoodSettings />
             </motion.div>
@@ -175,21 +175,21 @@ const ChatInterface: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3 text-cyan-500/80 font-mono text-xs ml-2"
+              className="flex items-center gap-3 text-cyan-600/60 font-mono text-xs ml-2"
             >
               <div className="flex gap-1.5">
                 <motion.div
-                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  className="w-1.5 h-1.5 bg-cyan-600 rounded-full"
                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
                 />
                 <motion.div
-                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  className="w-1.5 h-1.5 bg-cyan-600 rounded-full"
                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
                 />
                 <motion.div
-                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  className="w-1.5 h-1.5 bg-cyan-600 rounded-full"
                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
                 />
@@ -201,7 +201,7 @@ const ChatInterface: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-xl p-4 sm:p-6">
+        <div className="border-t border-white/20 bg-white/40 backdrop-blur-xl p-4 sm:p-6">
           <div className="flex items-end gap-3 max-w-5xl mx-auto relative">
             <div className="flex-shrink-0 mb-1">
               <VoiceControl />
@@ -215,7 +215,7 @@ const ChatInterface: React.FC = () => {
             <button
               onClick={sendMessage}
               disabled={!inputValue.trim()}
-              className="flex-shrink-0 p-3.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 rounded-xl disabled:opacity-30 disabled:hover:bg-cyan-600 transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1"
+              className="flex-shrink-0 p-3.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl disabled:opacity-30 disabled:hover:bg-cyan-600 transition-all duration-300 shadow-sm mb-1"
             >
               <Send size={20} />
             </button>
