@@ -36,7 +36,6 @@ class BroEngine:
             "jioni": [
                 "Habari za jioni! Umechoka leo?",
                 "Jioni njema! Siku imekuwa aje?",
-                "Poa! Tuko home stretch sasa",
                 "Vipi mzee! Tuko almost weekend?"
             ],
             "usiku": [
