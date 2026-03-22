@@ -1,30 +1,10 @@
 
+
 ---
 
-<div align="center">
-  <img src="./banner/banner-00.png" alt="Kioni Banner" width="800" />
-  
-  # KIONI
-  
-  <h3>Your Swahili-Speaking AI Bro 🇹🇿🇰🇪</h3>
+## About KIONI
 
-  <p>
-    <strong>Kioni</strong> is an advanced, culturally-aware AI assistant designed for the East African context. 
-    He speaks Swahili, English, and Sheng, featuring a unique Kitenge-inspired visual interface.
-  </p>
-
-  <br/>
-
-  <div>
-    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-    <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" />
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
-    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-    <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" />
-  </div>
-</div>
-
-<br/>
+Kioni is an advanced, culturally-aware AI assistant designed for the East African context. He speaks Swahili, English, and Sheng.
 
 ## ✨ Features
 
@@ -33,10 +13,8 @@
 | 🗣️ **Bilingual Chat** | Natural Swahili/English/Sheng code-switching with cultural context |
 | 👁️ **Vision** | Real-time camera integration for visual understanding and awareness |
 | 🎙️ **Voice** | High-quality speech-to-text (Whisper) and text-to-speech (TTS) in Swahili |
-| 🎨 **African Aesthetics** | Beautiful Kitenge-themed UI with an interactive animated character |
+| 🎨 **African Aesthetics** | Kitenge-themed UI with an interactive animated character |
 | 🧠 **Cultural Intelligence** | Deep understanding of East African context, proverbs, and local vibes |
-
-<br/>
 
 ## 🚀 Quick Start
 
@@ -87,8 +65,6 @@ npm run dev
 ```
 </details>
 
-<br/>
-
 ## 🔌 Integration APIs
 
 Kioni is built for extensibility. Integrate his intelligence into your own applications:
@@ -116,8 +92,6 @@ ws.send(JSON.stringify({
 | `/api/voice/upload` | `POST` | Upload audio for transcription & Swahili response |
 | `/api/hali/update` | `POST` | Update Kioni's mood and personality |
 
-<br/>
-
 ## 🔍 System Health & Debugging
 
 Check if Kioni's AI models are responding:
@@ -135,7 +109,7 @@ curl http://localhost:8000/api/debug/ai-status
   "models": {
     "text": "Mistral-7B (online)",
     "vision": "Moondream2 (online)",
-    "voice": "Whisper + Coqui TTS"
+    "voice": "Whisper + Edge TTS"
   }
 }
 ```
@@ -148,8 +122,6 @@ curl http://localhost:8000/api/debug/ai-status
 | `TTS package not found` | Use Python 3.9-3.11 for Coqui TTS compatibility |
 | Fallback responses | Verify `HUGGINGFACE_TOKEN` or switch to OpenRouter |
 
-<br/>
-
 ## 🛠️ Tech Stack
 
 <div align="center">
@@ -158,30 +130,11 @@ curl http://localhost:8000/api/debug/ai-status
 |----------|---------|-------|
 | React + TypeScript | FastAPI | Mistral-7B / Zephyr |
 | Vite | WebSockets | Whisper (STT) |
-| Tailwind CSS | Python 3.10+ | Coqui TTS |
+| Tailwind CSS | Python 3.10+ | Edge TTS |
 | Framer Motion | ChromaDB | Moondream2 (Vision) |
-| Zustand | Docker | HuggingFace |
+| Zustand | Docker | HuggingFace / OpenRouter |
 
 </div>
-
-<br/>
-
-## 📁 Project Structure
-
-```
-kioni-ai-bro/
-├── frontend/           # React app with Kitenge animations
-│   ├── src/
-│   └── public/
-├── backend/            # FastAPI server & AI integrations
-│   ├── app/
-│   └── requirements.txt
-├── docs/               # Documentation assets
-├── banner/             # Project banners
-└── docker-compose.yml
-```
-
-<br/>
 
 ## 🤝 Contributing
 
@@ -192,8 +145,6 @@ We welcome contributions! Whether it's:
 - 📚 Documentation
 
 See our [Contributing Guide](CONTRIBUTING.md) to get started.
-
-<br/>
 
 ## 📄 License
 
@@ -206,5 +157,3 @@ MIT © [zuck30](https://github.com/zuck30)
   <br/>
   <sub>🇹🇿 🇰🇪 🇺🇬 🇷🇼 🇧🇮</sub>
 </div>
-
----
