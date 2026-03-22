@@ -108,6 +108,16 @@ async def handle_chat_message(client_id: str, payload: dict):
         "payload": {"status": "stop"}
     }, client_id)
     
+    # Generate audio response
+    audio_response_b64 = None
+    try:
+        # We use Swahili as default for voice, or detect from text
+        tts_lang = "sw" if detected_lang.value in ["sw", "sheng", "mixed"] else "en"
+        audio_bytes = await speech_processor.text_to_speech(response_text, language=tts_lang)
+        audio_response_b64 = base64.b64encode(audio_bytes).decode()
+    except Exception as e:
+        print(f"TTS Error: {e}")
+
     # Send response
     await manager.send_personal_message({
         "type": "chat",
@@ -115,7 +125,8 @@ async def handle_chat_message(client_id: str, payload: dict):
             "message": response_text,
             "role": "kioni",
             "language": detected_lang.value,
-            "mood": user_mood.value
+            "mood": user_mood.value,
+            "audio": audio_response_b64
         }
     }, client_id)
 
@@ -127,14 +138,12 @@ async def handle_voice_message(client_id: str, payload: dict):
     # Transcribe
     transcription, lang = await speech_processor.speech_to_text(audio_bytes)
     
-    # Process as chat
+    # Process as chat but capture the response to avoid double processing
+    # For now, we'll just call handle_chat_message which now includes TTS
     await handle_chat_message(client_id, {
         "message": transcription,
         "session_id": payload.get("session_id", client_id)
     })
-    
-    # Generate voice response (would need to get the text response first)
-    # This is simplified - in production, i'll coordinate with chat handler
 
 async def handle_vision_message(client_id: str, payload: dict):
     """Handle camera frame"""

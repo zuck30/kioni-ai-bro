@@ -144,10 +144,10 @@ class SpeechProcessor:
         """Fallback TTS using Microsoft Edge TTS"""
         # Map languages to edge-tts voices
         voices = {
-            "sw": "sw-KE-ZindaNeural",  # Kenya Swahili
+            "sw": "sw-KE-RafikiNeural",  # Kenya Swahili (Male)
             "en": "en-US-GuyNeural"
         }
-        voice = voices.get(language, "sw-KE-ZindaNeural")
+        voice = voices.get(language, "sw-KE-RafikiNeural")
 
         communicate = edge_tts.Communicate(text, voice)
         audio_data = b""
