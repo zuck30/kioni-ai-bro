@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useKioniStore } from '../../store/kioniStore';
-import { Send, Mic, Camera, Settings } from 'lucide-react';
+import { Send, Mic, Settings } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import InputArea from './InputArea';
 import KioniSVG from '../KioniCharacter/KioniSVG';
-import CameraFeed from '../Kamera/CameraFeed';
 import VoiceControl from '../Sauti/VoiceControl';
 import MoodSettings from '../Hali/MoodSettings';
 
 const ChatInterface: React.FC = () => {
-  const { messages, isTyping, addMessage, sessionId, cameraEnabled } = useKioniStore();
+  const { messages, isTyping, addMessage, sessionId, currentGreeting } = useKioniStore();
   const [inputValue, setInputValue] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -48,8 +47,15 @@ const ChatInterface: React.FC = () => {
           content: data.payload.message,
           type: 'text',
           language: data.payload.language,
-          timestamp: new Date()
+          timestamp: new Date(),
+          audioUrl: data.payload.audio ? `data:audio/wav;base64,${data.payload.audio}` : undefined
         });
+
+        if (data.payload.audio) {
+          const audio = new Audio(`data:audio/wav;base64,${data.payload.audio}`);
+          audio.play().catch(e => console.error("Audio playback failed:", e));
+        }
+
         useKioniStore.getState().setTyping(false);
         break;
       case 'typing':
@@ -103,65 +109,47 @@ const ChatInterface: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
-      {/* Left Panel - Kioni Character */}
-      <div className="hidden lg:flex lg:w-1/3 flex-col items-center justify-center p-8 border-r border-amber-200 bg-white/50 backdrop-blur-sm">
+    <div className="flex h-screen bg-slate-950 text-slate-100 selection:bg-cyan-500/30">
+      {/* Left Panel - Kioni Character (Hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-1/3 xl:w-1/4 flex-col items-center justify-center p-8 border-r border-slate-800 bg-slate-900/50 backdrop-blur-xl">
         <div className="w-full h-2/3 relative">
           <KioniSVG />
         </div>
-        <div className="mt-4 text-center">
-          <h2 className="text-2xl font-bold text-amber-900">KIONI</h2>
-          <p className="text-amber-700 italic">"Bro wako"</p>
+        <div className="mt-8 text-center">
+          <h2 className="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">KIONI</h2>
+          <p className="text-slate-400 font-medium tracking-widest uppercase text-xs mt-2">Personal Bro Engine</p>
         </div>
       </div>
 
       {/* Right Panel - Chat */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 bg-slate-950">
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-amber-200 p-4 flex items-center justify-between">
+        <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <div className="lg:hidden w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-              <span className="text-amber-800 font-bold">K</span>
+            <div className="lg:hidden w-10 h-10 bg-slate-800 border border-cyan-500/30 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <span className="text-cyan-400 font-bold">K</span>
             </div>
-            <div>
-              <h1 className="font-bold text-amber-900">Chats</h1>
-              <p className="text-xs text-amber-600">
-                {useKioniStore.getState().currentGreeting}
+            <div className="min-w-0">
+              <h1 className="font-bold text-slate-100 truncate">Kioni Chat</h1>
+              <p className="text-[10px] text-cyan-500/70 font-mono uppercase tracking-wider">
+                {currentGreeting}
               </p>
             </div>
           </div>
           
           <div className="flex items-center gap-2">
             <button
-              onClick={() => useKioniStore.getState().toggleCamera()}
-              className={`p-2 rounded-full transition-colors ${
-                cameraEnabled ? 'bg-amber-500 text-white' : 'bg-amber-100 text-amber-700'
-              }`}
-            >
-              <Camera size={20} />
-            </button>
-            <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200"
+              className={`p-2 rounded-full transition-all duration-300 ${
+                showSettings
+                  ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
+                  : 'bg-slate-800 text-slate-300 hover:text-cyan-400'
+              }`}
             >
               <Settings size={20} />
             </button>
           </div>
         </header>
-
-        {/* Camera Feed (if enabled) */}
-        <AnimatePresence>
-          {cameraEnabled && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="border-b border-amber-200"
-            >
-              <CameraFeed />
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Settings Panel */}
         <AnimatePresence>
@@ -170,7 +158,7 @@ const ChatInterface: React.FC = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="border-b border-amber-200 bg-white/90"
+              className="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md overflow-hidden"
             >
               <MoodSettings />
             </motion.div>
@@ -178,7 +166,7 @@ const ChatInterface: React.FC = () => {
         </AnimatePresence>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide">
           {messages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}
@@ -187,45 +175,47 @@ const ChatInterface: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-2 text-amber-600"
+              className="flex items-center gap-3 text-cyan-500/80 font-mono text-xs ml-2"
             >
-              <div className="flex gap-1">
+              <div className="flex gap-1.5">
                 <motion.div
-                  className="w-2 h-2 bg-amber-400 rounded-full"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
+                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
                 />
                 <motion.div
-                  className="w-2 h-2 bg-amber-400 rounded-full"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
+                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
                 />
                 <motion.div
-                  className="w-2 h-2 bg-amber-400 rounded-full"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
+                  className="w-1.5 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
                 />
               </div>
-              <span className="text-sm">Kioni anawaza...</span>
+              <span className="tracking-widest uppercase">Kioni anawaza...</span>
             </motion.div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-amber-200 bg-white/80 backdrop-blur-md p-4">
-          <div className="flex items-center gap-2 max-w-4xl mx-auto">
-            <VoiceControl />
+        <div className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-xl p-4 sm:p-6">
+          <div className="flex items-end gap-3 max-w-5xl mx-auto relative">
+            <div className="flex-shrink-0 mb-1">
+              <VoiceControl />
+            </div>
             <InputArea
               value={inputValue}
               onChange={setInputValue}
               onSend={sendMessage}
-              placeholder="Andika ujumbe... (Type message)"
+              placeholder="Sema na Kioni... (Type message)"
             />
             <button
               onClick={sendMessage}
               disabled={!inputValue.trim()}
-              className="p-3 bg-amber-600 text-white rounded-full hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-shrink-0 p-3.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 rounded-xl disabled:opacity-30 disabled:hover:bg-cyan-600 transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1"
             >
               <Send size={20} />
             </button>
