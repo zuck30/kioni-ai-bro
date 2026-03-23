@@ -29,7 +29,6 @@ class Settings(BaseSettings):
     TEXT_MODEL_PRIMARY: str = "HuggingFaceH4/zephyr-7b-beta"
     TEXT_MODEL_FALLBACK: str = "google/flan-t5-large"
     WHISPER_MODEL: str = "base"
-    VISION_MODEL: str = "vikhyatk/moondream2"
     TTS_MODEL: str = "tts_models/multilingual/multi-dataset/xtts_v2"
     
     SWAHILI_ROBERTA: str = "akiraindinesh/swahili-roberta"
