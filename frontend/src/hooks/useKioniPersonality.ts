@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useKioniStore } from '../store/kioniStore';
 import { Mood } from '../store/types';
 import axios from 'axios';
+import { API_URL } from '../api/config';
 
 export const useKioniPersonality = () => {
   const { 
@@ -17,7 +18,7 @@ export const useKioniPersonality = () => {
     updatePersonality({ currentMood: mood });
     
     try {
-      await axios.post('http://localhost:8000/api/hali/update', {
+      await axios.post(`${API_URL}/api/hali/update`, {
         mode: mood
       });
     } catch (err) {
@@ -29,7 +30,7 @@ export const useKioniPersonality = () => {
     updatePersonality({ [trait]: value });
     
     try {
-      await axios.post('http://localhost:8000/api/hali/update', {
+      await axios.post(`${API_URL}/api/hali/update`, {
         [trait]: value
       });
     } catch (err) {

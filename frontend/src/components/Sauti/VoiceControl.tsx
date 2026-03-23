@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Square } from 'lucide-react';
 import { useKioniStore } from '../../store/kioniStore';
 import axios from 'axios';
+import { API_URL } from '../../api/config';
 
 const VoiceControl: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -71,7 +72,7 @@ const VoiceControl: React.FC = () => {
     formData.append('session_id', sessionId);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/voice/upload', formData, {
+      const response = await axios.post(`${API_URL}/api/voice/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

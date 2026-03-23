@@ -7,6 +7,7 @@ import InputArea from './InputArea';
 import KioniSVG from '../KioniCharacter/KioniSVG';
 import VoiceControl from '../Sauti/VoiceControl';
 import MoodSettings from '../Hali/MoodSettings';
+import { WS_URL } from '../../api/config';
 
 const ChatInterface: React.FC = () => {
   const { messages, isTyping, addMessage, sessionId, currentGreeting } = useKioniStore();
@@ -17,7 +18,7 @@ const ChatInterface: React.FC = () => {
 
   // WebSocket connection
   useEffect(() => {
-    const wsUrl = `ws://localhost:8000/ws/chat/${sessionId}`;
+    const wsUrl = `${WS_URL}/${sessionId}`;
     ws.current = new WebSocket(wsUrl);
 
     ws.current.onopen = () => {
