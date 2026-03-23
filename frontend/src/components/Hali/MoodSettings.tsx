@@ -4,6 +4,7 @@ import { useKioniStore } from '../../store/kioniStore';
 import { Mood } from '../../store/types';
 import axios from 'axios';
 import { Coffee, Sparkles, Brain, PartyPopper, Handshake, Zap } from 'lucide-react';
+import { API_URL } from '../../api/config';
 
 const moods: { id: Mood; name: string; description: string; icon: React.ReactNode }[] = [
   { id: 'poa', name: 'Poa', description: 'Chill & relaxed', icon: <Coffee size={24} /> },
@@ -21,7 +22,7 @@ const MoodSettings: React.FC = () => {
     updatePersonality({ currentMood: mood });
     
     try {
-      await axios.post('http://localhost:8000/api/hali/update', {
+      await axios.post(`${API_URL}/api/hali/update`, {
         mode: mood
       });
     } catch (err) {

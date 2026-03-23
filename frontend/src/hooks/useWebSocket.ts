@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useKioniStore } from '../store/kioniStore';
+import { WS_URL } from '../api/config';
 
 interface WebSocketMessage {
   type: 'chat' | 'typing' | 'vision' | 'voice' | 'system' | 'error';
@@ -31,7 +32,7 @@ export const useWebSocket = () => {
   const connect = useCallback(() => {
     if (ws.current?.readyState === WebSocket.OPEN) return;
 
-    const wsUrl = `ws://localhost:8000/ws/chat/${sessionId}`;
+    const wsUrl = `${WS_URL}/${sessionId}`;
     ws.current = new WebSocket(wsUrl);
 
     ws.current.onopen = () => {
