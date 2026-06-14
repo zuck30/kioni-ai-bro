@@ -315,14 +315,6 @@ git push origin feature/amazing-feature
 
 ---
 
-## 🙏 Acknowledgments
-
-- **Mistral AI** & **HuggingFace** — Open-weight models enabling local-first AI
-- **East African Community** — Cultural inspiration and linguistic guidance
-- **Open Source Community** — All the libraries that make KIONI possible
-
----
-
 <div align="center">
     <br/>
     <br/>
